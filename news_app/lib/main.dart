@@ -5,9 +5,13 @@ import 'package:provider/provider.dart';
 import 'package:news_app/context/context_class.dart';
 import 'package:news_app/api_calls/get_latest_news.dart';
 
-
 void main() {
-  runApp(ChangeNotifierProvider(create: (_) => ContextClass(), child: MyApp()));
+  runApp(
+    ChangeNotifierProvider<ContextClass>.value(
+      value: ContextClass.instance,
+      child: MyApp(),
+    ),
+  );
 }
 
 class MyApp extends StatefulWidget {
@@ -21,9 +25,29 @@ class _MyAppState extends State<MyApp> {
   @override
   void initState() {
     super.initState();
-    GetLatestNews.getData().then((data){
-      context.read<ContextClass>().data=data;
-      // debugPrint(data.toString());
+    GetLatestNews.getData().then((data) {
+      late String nextPage;
+      data.removeWhere((map) {
+        if (map.containsKey("nextPage")) {
+          nextPage = map["nextPage"];
+          return true; // remove this map
+        }
+        return false;
+      });
+      context.read<ContextClass>().courosalData = data;
+      context.read<ContextClass>().nextPage = nextPage;
+      GetLatestNews.getDataForRow(nextPage).then((data) {
+        late String nextPage;
+        data.removeWhere((map) {
+          if (map.containsKey("nextPage")) {
+            nextPage = map["nextPage"];
+            return true; // remove this map
+          }
+          return false;
+        });
+        context.read<ContextClass>().data = data;
+        context.read<ContextClass>().nextPage = nextPage;
+      });
     });
     WidgetsBinding.instance.addPostFrameCallback((_) {
       final brightness = MediaQuery.of(context).platformBrightness;
@@ -33,10 +57,11 @@ class _MyAppState extends State<MyApp> {
 
   @override
   Widget build(BuildContext context) {
-    bool theme = Provider.of<ContextClass>(context, listen: true).theme;
+    bool theme = MediaQuery.of(context).platformBrightness != Brightness.dark;
     return MaterialApp(
       theme: theme ? ThemeData.light() : ThemeData.dark(),
-      home: HomeScreen(),
+      initialRoute: '/',
+      routes: {'/': (context) => HomeScreen()},
     );
   }
 }

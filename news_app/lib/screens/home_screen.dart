@@ -1,38 +1,24 @@
 import 'package:flutter/material.dart';
 import 'package:news_app/context/context_class.dart';
-import 'package:news_app/widget/courosal.dart';
+import 'package:news_app/screens/home_screen_shimmer.dart';
+import 'package:news_app/widget/bottom_bar.dart';
 import 'package:news_app/widget/news_rows.dart';
 import 'package:provider/provider.dart';
 
 class HomeScreen extends StatelessWidget {
-  const HomeScreen({super.key});
+  HomeScreen({super.key});
+
   @override
   Widget build(BuildContext context) {
     final data = Provider.of<ContextClass>(context, listen: true).data;
+    final courosalData = Provider.of<ContextClass>(
+      context,
+      listen: true,
+    ).courosalData;
+
     return Scaffold(
       appBar: AppBar(title: const Text("News App"), centerTitle: true),
-      bottomNavigationBar: BottomAppBar(
-        height: 50,
-        child: Row(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          spacing: 10,
-          children: [
-            IconButton(
-              onPressed: () => {print("home")},
-              icon: Icon(Icons.home),
-            ),
-            IconButton(
-              onPressed: () => {print("User")},
-              icon: Icon(Icons.person),
-            ),
-            IconButton(
-              onPressed: () => {print("Search")},
-              icon: Icon(Icons.search),
-            ),
-          ],
-        ),
-      ),
+      bottomNavigationBar: BottomBar(),
       drawer: Drawer(
         child: Column(
           children: [
@@ -43,7 +29,10 @@ class HomeScreen extends StatelessWidget {
 
               children: [
                 IconButton(
-                  onPressed: () => {print("home")},
+                  onPressed: () => {
+                    print("Home"),
+                    Navigator.pushNamed(context, '/'),
+                  },
                   icon: Icon(Icons.home),
                 ),
                 IconButton(
@@ -63,12 +52,16 @@ class HomeScreen extends StatelessWidget {
           ],
         ),
       ),
-      body: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        spacing: 10,
-        children: (data.length>1) ?[Courosal(), NewsRows()]:[Text("Loading")],
-      ),
+      body: (data.length > 1 && courosalData.length > 1)
+          ? Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              spacing: 10,
+              children: [NewsRows()],
+            )
+          : HomeScreenShimmer(
+              theme: Provider.of<ContextClass>(context, listen: true).theme,
+            ),
     );
   }
 }
