@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:news_app/constants/constants.dart';
 import 'package:news_app/context/context_class.dart';
 import 'package:news_app/utils/shimmer/shimmer.dart';
+import 'package:news_app/widget/bottom_bar.dart';
 import 'package:news_app/widget/relavant_news_row.dart';
 import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -67,11 +68,12 @@ class NewsDetails extends StatelessWidget {
       {"category": newsData['description'] ?? newsData['title'] ?? ""}.entries,
     );
 
+    final bool theme = Provider.of<ContextClass>(context, listen: true).theme;
 
     return Scaffold(
       appBar: AppBar(centerTitle: true, title: Text("News App")),
       body: Shimmer(
-        linearGradient: MediaQuery.of(context).platformBrightness != Brightness.dark
+        linearGradient: theme
             ? Constants.shimmerGradientLight
             : Constants.shimmerGradientDark,
         child: ListView(
@@ -195,6 +197,7 @@ class NewsDetails extends StatelessWidget {
           ],
         ),
       ),
+      bottomNavigationBar: BottomBar(),
     );
   }
 }

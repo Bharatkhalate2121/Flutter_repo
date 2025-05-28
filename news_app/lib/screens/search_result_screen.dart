@@ -1,14 +1,73 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:news_app/api_calls/get_latest_news.dart';
-import 'package:news_app/constants/constants.dart';
+import 'package:get/get_rx/src/rx_workers/utils/debouncer.dart';
+import 'package:news_app/api_calls/search_news.dart';
 import 'package:news_app/context/context_class.dart';
 import 'package:news_app/screens/news_details.dart';
-import 'package:news_app/widget/courosal.dart';
+import 'package:news_app/widget/bottom_bar.dart';
 import 'package:provider/provider.dart';
 
-class NewsRows extends StatelessWidget {
-  const NewsRows({super.key});
+class SearchResultScreen extends StatefulWidget {
+  final String keyword;
+  final List<Map<String, dynamic>> data;
+  const SearchResultScreen({
+    super.key,
+    required this.keyword,
+    required this.data,
+  });
+  @override
+  State<SearchResultScreen> createState() => _SearchResultScreenState();
+}
+
+class _SearchResultScreenState extends State<SearchResultScreen> {
+  late List<Map<String, dynamic>> data;
+  bool isLoadingNext = false;
+  Debouncer debouncer = new Debouncer(delay: Duration(seconds: 5));
+
+  void getData({required String query, String? page}) {
+    Future<List<Map<String, dynamic>>> getNews = (page != null)
+        ? SearchNews.getData(query: query, nextPage: page)
+        : SearchNews.getData(query: query);
+    getNews.then((value) {
+      setState(() {
+        data = [...data, ...value];
+        isLoadingNext = false;
+      });
+    });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    data = widget.data;
+  }
+
+  Widget getContent(BuildContext context) {
+    return ListView.builder(
+      itemCount: data.length + 1,
+      itemBuilder: (BuildContext context, int index) {
+        if (data.isNotEmpty && index >= data.length) {
+          if (!isLoadingNext) {
+            isLoadingNext = true;
+            getData(
+              query: widget.keyword,
+              page: Provider.of<ContextClass>(
+                context,
+                listen: false,
+              ).searchNextPage,
+            );
+          }
+          return Center(
+            widthFactor: 2,
+            heightFactor: 2,
+            child: CircularProgressIndicator(),
+          );
+        } else {
+          return getRow(context, data[index]);
+        }
+      },
+    );
+  }
 
   Widget getRow(BuildContext context, Map<String, dynamic> newsData) {
     final theme = Provider.of<ContextClass>(context).theme;
@@ -86,66 +145,17 @@ class NewsRows extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final GlobalKey<RefreshIndicatorState> _refreshIndicatorKey =Constants.refreshIndicatorKey;
-    final data = Provider.of<ContextClass>(context, listen: true).data;
-    bool isLoading = false;
-
-    void getData() {
-      GetLatestNews.getDataForRow(
-        Provider.of<ContextClass>(context, listen: true).nextPage,
-      ).then((data) {
-        late String nextPage;
-        data.removeWhere((map) {
-          if (map.containsKey("nextPage")) {
-            nextPage = map["nextPage"];
-            return true; // remove this map
-          }
-          return false;
-        });
-        context.read<ContextClass>().data = [
-          ...Provider.of<ContextClass>(context, listen: false).data,
-          ...data,
-        ];
-        context.read<ContextClass>().nextPage = nextPage;
-        isLoading = false;
-      });
-    }
-
-    return Container(
-      width: double.infinity,
-      height: MediaQuery.of(context).size.height * 0.85,
-      // Removed circular shape which doesn't fit list view layout
-      decoration: BoxDecoration(borderRadius: BorderRadius.circular(10)),
-      child: RefreshIndicator(
-        key: _refreshIndicatorKey,
-        onRefresh: () async {
-          _refreshIndicatorKey.currentState?.show();
-          await context.read<ContextClass>().refreshData(context);
-        },
-        child: ListView.builder(
-          itemCount: data.length + 1,
-          itemBuilder: (BuildContext context, int index) {
-            if (index >= data.length) {
-              if (!isLoading) {
-                isLoading = true;
-                getData();
-              }
-              return Center(
-                widthFactor: 2,
-                heightFactor: 2,
-                child: CircularProgressIndicator(),
-              );
-            } else if (index == 0) {
-              return Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [Courosal(), getRow(context, data[index])],
-              );
-            } else {
-              return getRow(context, data[index]);
-            }
-          },
-        ),
+    return Scaffold(
+      appBar: AppBar(centerTitle: true, title: const Text("News App")),
+      body: Column(
+        children: [
+          SizedBox(
+            height: MediaQuery.of(context).size.height * 0.85,
+            child: getContent(context),
+          ),
+        ],
       ),
+      bottomNavigationBar: BottomBar(),
     );
   }
 }

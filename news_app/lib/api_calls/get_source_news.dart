@@ -16,17 +16,20 @@ class GetSourceNews {
         'domain': domain,
       });
       var response = await http.get(endPoint);
-      var decoded = jsonDecode(response.body);
-      ContextClass.instance.sourceNextPage = decoded['nextPage'] ?? "";
+      if (response.statusCode == 200) {
+        var decoded = jsonDecode(response.body);
+        ContextClass.instance.sourceNextPage = decoded['nextPage'] ?? "";
 
-      return List<Map<String, dynamic>>.from(
-        decoded['results'] ?? Constants.fallBackData,
-      ).where((map) {
-        return !(map.containsKey("article_id") &&
-            map["article_id"] == ContextClass.instance.current);
-      }).toList();
+        return List<Map<String, dynamic>>.from(
+          decoded['results'] ?? Constants.fallBackData,
+        ).where((map) {
+          return !(map.containsKey("article_id") &&
+              map["article_id"] == ContextClass.instance.current);
+        }).toList();
+      } else {
+        print('${response.statusCode}: ${response.reasonPhrase} ');
+      }
     } catch (err) {
-      
       print("error while fetching data $err");
     }
     return Constants.fallBackData;

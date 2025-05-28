@@ -18,8 +18,12 @@ class BottomBar extends StatelessWidget {
         children: [
           IconButton(
             onPressed: () async {
-              Constants.refreshIndicatorKey.currentState?.show();
-              await context.read<ContextClass>().refreshData(context);
+              if (ModalRoute.of(context)?.settings.name == '/') {
+                await Constants.refreshIndicatorKey.currentState?.show();
+                await context.read<ContextClass>().refreshData(context);
+                print("home");
+                return;
+              }
               Navigator.pushNamedAndRemoveUntil(context, '/', (route) => false);
               print("home");
             },
@@ -31,7 +35,10 @@ class BottomBar extends StatelessWidget {
             icon: Icon(Icons.person),
           ),
           IconButton(
-            onPressed: () => {print("Search")},
+            onPressed: () => {
+              Navigator.pushNamed(context, '/search'),
+              print("Search"),
+            },
             icon: Icon(Icons.search),
           ),
         ],

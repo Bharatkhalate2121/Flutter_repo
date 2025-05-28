@@ -31,7 +31,11 @@ class HomeScreen extends StatelessWidget {
                 IconButton(
                   onPressed: () => {
                     print("Home"),
-                    Navigator.pushNamed(context, '/'),
+                    Navigator.pushNamedAndRemoveUntil(
+                      context,
+                      '/',
+                      (route) => false,
+                    ),
                   },
                   icon: Icon(Icons.home),
                 ),

@@ -10,11 +10,9 @@ class ContextClass extends ChangeNotifier {
   late String _current;
   late String _nextPage;
   late String _relevantNextPage;
+  late String _searchNextPage;
   late String _sourceNextPage;
   bool _theme = true; //true for light and false for dark
-  
-
-  
 
   set data(List<Map<String, dynamic>> data) {
     _data = data;
@@ -43,6 +41,13 @@ class ContextClass extends ChangeNotifier {
   }
 
   String get nextPage => _nextPage;
+
+  set searchNextPage(String nextPage) {
+    _searchNextPage = nextPage;
+    notifyListeners();
+  }
+
+  String get searchNextPage => _searchNextPage;
 
   set relevantNextPage(String nextPage) {
     _relevantNextPage = nextPage;
@@ -99,6 +104,4 @@ class ContextClass extends ChangeNotifier {
       contextClass.notifyListeners();
     }
   }
-
-  
 }

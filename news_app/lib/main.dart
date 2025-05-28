@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:news_app/screens/home_screen.dart';
+import 'package:news_app/screens/news_details.dart';
+import 'package:news_app/screens/search_screen.dart';
 import 'package:provider/provider.dart';
 import 'package:news_app/context/context_class.dart';
 import 'package:news_app/api_calls/get_latest_news.dart';
@@ -57,11 +59,17 @@ class _MyAppState extends State<MyApp> {
 
   @override
   Widget build(BuildContext context) {
+    final brightness = MediaQuery.of(context).platformBrightness;
+    context.read<ContextClass>().theme = brightness != Brightness.dark;
     bool theme = MediaQuery.of(context).platformBrightness != Brightness.dark;
     return MaterialApp(
       theme: theme ? ThemeData.light() : ThemeData.dark(),
       initialRoute: '/',
-      routes: {'/': (context) => HomeScreen()},
+      routes: {
+        '/': (context) => HomeScreen(),
+        '/search': (context) => SearchScreen(),
+        '/details': (context) => NewsDetails(newsData: {}),
+      },
     );
   }
 }
