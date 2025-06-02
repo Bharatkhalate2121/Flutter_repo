@@ -1,6 +1,7 @@
 import "package:flutter/material.dart";
 import "package:provider/provider.dart";
 import "package:weather_app/state.dart";
+import 'package:flutter/foundation.dart';
 
 class CardWidget extends StatelessWidget {
   const CardWidget({super.key});
@@ -26,14 +27,17 @@ class CardWidget extends StatelessWidget {
             height: MediaQuery.of(context).size.height * 0.3,
             child: Column(
               children: [
-                Image(
+                Container(
+                  padding: EdgeInsetsGeometry.all(23),
                   height: height * 0.2,
                   width: (width > 300) ? 300 : width,
-                  image: NetworkImage(
-                    "https://openweathermap.org/img/wn/${dataMapList[index]["weather"][0]["icon"]}.png",
-                    scale: 0.1,
+                  child: Image.asset(
+                    kIsWeb
+                        ? "images/${dataMapList[index]["weather"][0]["icon"]}.png"
+                        : "assets/images/${dataMapList[index]["weather"][0]["icon"]}.png",
                   ),
                 ),
+
                 Container(
                   height: height * 0.1,
                   child: Column(

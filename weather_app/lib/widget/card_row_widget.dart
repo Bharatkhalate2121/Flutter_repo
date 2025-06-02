@@ -1,6 +1,7 @@
 import "package:flutter/material.dart";
 import "package:provider/provider.dart";
 import "package:weather_app/state.dart";
+import 'package:flutter/foundation.dart';
 
 class CardRowWidget extends StatelessWidget {
   Map<String, dynamic> dataMap;
@@ -46,15 +47,19 @@ class CardRowWidget extends StatelessWidget {
                 mainAxisSize: MainAxisSize.max,
                 spacing: 0,
                 children: [
-                  Image(
-                    height: height * 0.6,
+                  Container(
+                    height: height * 0.5,
                     width: width,
-                    image: NetworkImage(
-                      "https://openweathermap.org/img/wn/${dataMap["weather"][0]["icon"]}.png",
+                    padding: EdgeInsetsGeometry.all(13),
+                    child: Image.asset(
+                      kIsWeb
+                          ? "images/${dataMap["weather"][0]["icon"]}.png"
+                          : "assets/images/${dataMap["weather"][0]["icon"]}.png",
                     ),
                   ),
+
                   SizedBox(
-                    height: height * 0.3,
+                    height: height * 0.4,
                     child: Column(
                       children: [
                         Text(

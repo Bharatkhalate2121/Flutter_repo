@@ -8,7 +8,7 @@ import 'package:news_app/screens/news_details.dart';
 import 'package:news_app/screens/search_result_screen.dart';
 import 'package:news_app/utils/shimmer/shimmer.dart';
 import 'package:news_app/utils/shimmer/shimmer_loading.dart';
-import 'package:news_app/widget/bottom_bar.dart';
+
 import 'package:news_app/widget/history_list.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';

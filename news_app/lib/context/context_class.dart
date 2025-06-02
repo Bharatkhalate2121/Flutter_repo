@@ -13,6 +13,22 @@ class ContextClass extends ChangeNotifier {
   late String _searchNextPage;
   late String _sourceNextPage;
   bool _theme = true; //true for light and false for dark
+  bool _isLogged = false;
+  double _height = 10;
+  bool _showDialog = true;
+
+  set height(double height) {
+    _height = height;
+  }
+
+  double get height => _height;
+
+  set showDialog(bool showDialog) {
+    _showDialog = showDialog;
+    notifyListeners();
+  }
+
+  bool get showDialog => _showDialog;
 
   set data(List<Map<String, dynamic>> data) {
     _data = data;
@@ -25,6 +41,13 @@ class ContextClass extends ChangeNotifier {
 
   set theme(bool theme) {
     _theme = theme;
+    notifyListeners();
+  }
+
+  bool get isLoged => _isLogged;
+
+  set isLogged(bool isLogged) {
+    _isLogged = isLogged;
     notifyListeners();
   }
 

@@ -120,7 +120,9 @@ class NewsDetails extends StatelessWidget {
                     width: double.infinity,
                     child: TextButton(
                       style: ButtonStyle(
-                        backgroundColor: WidgetStatePropertyAll(const Color.fromARGB(255, 30, 183, 243)),
+                        backgroundColor: WidgetStatePropertyAll(
+                          const Color.fromARGB(255, 30, 183, 243),
+                        ),
                         padding: WidgetStatePropertyAll(
                           EdgeInsets.zero,
                         ), // to avoid extra vertical padding

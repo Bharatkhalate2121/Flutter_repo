@@ -31,7 +31,13 @@ class BottomBar extends StatelessWidget {
             icon: Icon(Icons.home),
           ),
           IconButton(
-            onPressed: () => {print("User")},
+            onPressed: () async {
+              if (ModalRoute.of(context)?.settings.name == '/users') {
+                return;
+              }
+              Navigator.pushNamed(context, '/users');
+              print("user");
+            },
             icon: Icon(Icons.person),
           ),
           IconButton(

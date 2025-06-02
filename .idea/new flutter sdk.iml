@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<module type="JAVA_MODULE" version="4">
+  <component name="NewModuleRootManager" inherit-compiler-output="true">
+    <exclude-output />
+    <content url="file://$MODULE_DIR$">
+      <excludeFolder url="file://$MODULE_DIR$/currency_converter/.dart_tool" />
+      <excludeFolder url="file://$MODULE_DIR$/currency_converter/.pub" />
+      <excludeFolder url="file://$MODULE_DIR$/currency_converter/build" />
+      <excludeFolder url="file://$MODULE_DIR$/flutter-sdk/flutter_billdesk_sdk/.dart_tool" />
+      <excludeFolder url="file://$MODULE_DIR$/flutter-sdk/flutter_billdesk_sdk/.pub" />
+      <excludeFolder url="file://$MODULE_DIR$/flutter-sdk/flutter_billdesk_sdk/build" />
+      <excludeFolder url="file://$MODULE_DIR$/flutter-sdk/merchant_app/.dart_tool" />
+      <excludeFolder url="file://$MODULE_DIR$/flutter-sdk/merchant_app/.pub" />
+      <excludeFolder url="file://$MODULE_DIR$/flutter-sdk/merchant_app/build" />
+      <excludeFolder url="file://$MODULE_DIR$/new/flutter-sdk/flutter_billdesk_sdk/.dart_tool" />
+      <excludeFolder url="file://$MODULE_DIR$/new/flutter-sdk/flutter_billdesk_sdk/.pub" />
+      <excludeFolder url="file://$MODULE_DIR$/new/flutter-sdk/flutter_billdesk_sdk/build" />
+      <excludeFolder url="file://$MODULE_DIR$/new/flutter-sdk/merchant_app/.dart_tool" />
+      <excludeFolder url="file://$MODULE_DIR$/new/flutter-sdk/merchant_app/.pub" />
+      <excludeFolder url="file://$MODULE_DIR$/new/flutter-sdk/merchant_app/build" />
+      <excludeFolder url="file://$MODULE_DIR$/weather_app/.dart_tool" />
+      <excludeFolder url="file://$MODULE_DIR$/weather_app/.pub" />
+      <excludeFolder url="file://$MODULE_DIR$/weather_app/build" />
+    </content>
+    <orderEntry type="inheritedJdk" />
+    <orderEntry type="sourceFolder" forTests="false" />
+  </component>
+</module>

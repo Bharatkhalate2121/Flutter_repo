@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 class Constants {
   static const String apiKey =
-      "pub_87207da19bc27d30276c52b59420b9bf29ee8"; //"pub_85662b976b5905d7d2b7ab0410c340e7ca98c";
+      /*"pub_87207da19bc27d30276c52b59420b9bf29ee8"; */ "pub_85662b976b5905d7d2b7ab0410c340e7ca98c";
   static const String url = "newsdata.io";
   static const String path = "/api/1/latest";
   static final GlobalKey<RefreshIndicatorState> refreshIndicatorKey =

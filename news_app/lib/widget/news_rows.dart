@@ -4,6 +4,7 @@ import 'package:news_app/api_calls/get_latest_news.dart';
 import 'package:news_app/constants/constants.dart';
 import 'package:news_app/context/context_class.dart';
 import 'package:news_app/screens/news_details.dart';
+import 'package:news_app/widget/Timer_widget.dart';
 import 'package:news_app/widget/courosal.dart';
 import 'package:provider/provider.dart';
 
@@ -86,9 +87,14 @@ class NewsRows extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final GlobalKey<RefreshIndicatorState> _refreshIndicatorKey =Constants.refreshIndicatorKey;
+    final GlobalKey<RefreshIndicatorState> _refreshIndicatorKey =
+        Constants.refreshIndicatorKey;
     final data = Provider.of<ContextClass>(context, listen: true).data;
     bool isLoading = false;
+    bool doShowDialog = Provider.of<ContextClass>(
+      context,
+      listen: true,
+    ).showDialog;
 
     void getData() {
       GetLatestNews.getDataForRow(
@@ -138,7 +144,42 @@ class NewsRows extends StatelessWidget {
             } else if (index == 0) {
               return Column(
                 mainAxisAlignment: MainAxisAlignment.center,
-                children: [Courosal(), getRow(context, data[index])],
+                children: [
+                  Courosal(),
+                  getRow(context, data[index]),
+
+                  // if (doShowDialog &&
+                  //     !Provider.of<ContextClass>(
+                  //       context,
+                  //       listen: true,
+                  //     ).isLoged &&
+                  //     (ModalRoute.of(context)?.settings.name == '/' ||
+                  //         ModalRoute.of(context)?.settings.name == 'search'))
+                  //   Builder(
+                  //     builder: (context) {
+                  //       WidgetsBinding.instance.addPostFrameCallback((_) {
+                  //         showDialog(
+                  //           context: context,
+                  //           barrierDismissible:
+                  //               false, // Disable Android back button
+                  //           builder: (context) => PopScope(
+                  //             child: Stack(
+                  //               children: [
+                  //                 // This prevents tap outside to dismiss (by not allowing touches to leak)
+                  //                 ModalBarrier(
+                  //                   dismissible: false,
+                  //                   color: Colors.black54,
+                  //                 ),
+                  //                 Center(child: Dialog(child: TimerWidget())),
+                  //               ],
+                  //             ),
+                  //           ),
+                  //         );
+                  //       });
+                  //       return SizedBox.shrink(); // Placeholder
+                  //     },
+                  //   ),
+                ],
               );
             } else {
               return getRow(context, data[index]);
